@@ -347,7 +347,7 @@ void linalg_gemm<gpu, mshadow::half::half_t>(const Tensor<gpu, 2, mshadow::half:
     CHECK_NOTNULL(s); \
     linalg_check_batch_size(A.size(0), B.size(0), C.size(0)); \
     check_gemm(A[0], B[0], C[0], alpha, beta, tA, tB); \
-    using namespace mshadow::cuda; \
+    using namespace mshadow::ms_cuda; \
     auto handle = Stream<gpu>::GetBlasHandle(s); \
     cublasMath_t saved_math_mode = SetCublasMathMode(handle, VERSION_ADJUSTED_TF32_MATH); \
     CUBLAS_CALL(cublas##fname(handle, \
@@ -386,7 +386,7 @@ void linalg_gemm<gpu, mshadow::half::half_t>(const Tensor<gpu, 2, mshadow::half:
       bool use_tensor_ops =
           GetEnvAllowTensorCore() && GetEnvAllowTensorCoreConversion();
 
-      using namespace mshadow::cuda;
+      using namespace mshadow::ms_cuda;
       auto cublas_math_mode =
           use_tensor_ops ? CUBLAS_TENSOR_OP_MATH : VERSION_ADJUSTED_TF32_MATH;
       auto previous_math_mode = SetCublasMathMode(blas_handle, cublas_math_mode);
@@ -872,7 +872,7 @@ void linalg_potri<gpu, DType>(const Tensor<gpu, 2, DType>& A, bool lower, Stream
   CHECK_NOTNULL(s); \
   check_potri(A, lower); \
   Storage::Handle buffer = Storage::Get()->Alloc(sizeof(DType)*A.MSize(), Context::GPU()); \
-  using namespace mshadow::cuda; \
+  using namespace mshadow::ms_cuda; \
   int ngrid = std::min(kMaxGridNum, \
                        static_cast<int>((A.MSize() + kBaseThreadNum - 1) / kBaseThreadNum)); \
   linalgInitIdentityGPU<<<ngrid, kBaseThreadNum, 0, mshadow::Stream<gpu>::GetStream(s)>>> \
@@ -896,7 +896,7 @@ void linalg_batch_potri<gpu, DType>(const Tensor<gpu, 3, DType>& A, bool lower, 
   CHECK_GT(A.size(0), 0); \
   check_potri(A[0], lower); \
   Storage::Handle buffer = Storage::Get()->Alloc(sizeof(DType)*A.MSize(), Context::GPU()); \
-  using namespace mshadow::cuda; \
+  using namespace mshadow::ms_cuda; \
   int ngrid = std::min(kMaxGridNum, \
                        static_cast<int>((A.MSize() + kBaseThreadNum - 1) / kBaseThreadNum)); \
   linalgInitIdentityGPU<<<ngrid, kBaseThreadNum, 0, mshadow::Stream<gpu>::GetStream(s)>>> \

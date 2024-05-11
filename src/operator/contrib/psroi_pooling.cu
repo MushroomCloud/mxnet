@@ -24,7 +24,7 @@
   } while (0)
 
 namespace mshadow {
-namespace cuda {
+namespace ms_cuda {
 
 template <typename DType>
 __global__ void PSROIPoolForwardKernel(
@@ -217,7 +217,7 @@ inline void PSROIPoolBackwardAcc(const Tensor<gpu, 4, DType> &in_grad,
   PSROIPOOLING_CUDA_CHECK(cudaPeekAtLastError());
 }
 
-}  // namespace cuda
+}  // namespace ms_cuda
 
 template<typename DType>
 inline void PSROIPoolForward(const Tensor<gpu, 4, DType> &out,
@@ -226,7 +226,7 @@ inline void PSROIPoolForward(const Tensor<gpu, 4, DType> &out,
                            const float spatial_scale,
                            const int output_dim_,
                            const int group_size_) {
-  cuda::PSROIPoolForward(out, data, bbox, spatial_scale, output_dim_, group_size_);
+  ms_cuda::PSROIPoolForward(out, data, bbox, spatial_scale, output_dim_, group_size_);
 }
 
 template<typename DType>
@@ -236,7 +236,7 @@ inline void PSROIPoolBackwardAcc(const Tensor<gpu, 4, DType> &in_grad,
                             const float spatial_scale,
                             const int output_dim_,
                             const int group_size_) {
-  cuda::PSROIPoolBackwardAcc(in_grad, out_grad, bbox, spatial_scale, output_dim_, group_size_);
+  ms_cuda::PSROIPoolBackwardAcc(in_grad, out_grad, bbox, spatial_scale, output_dim_, group_size_);
 }
 
 }  // namespace mshadow

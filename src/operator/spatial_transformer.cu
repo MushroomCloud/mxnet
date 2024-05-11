@@ -45,7 +45,7 @@ __global__ void
  * threads per block. Setting __launch_bounds__ ensures
  * that such configuration can always be launched.
  */
-__launch_bounds__(cuda::kMaxThreadsPerBlock, 1)
+__launch_bounds__(ms_cuda::kMaxThreadsPerBlock, 1)
 BilinearSamplingForwardKernel(const int i_c, const int i_h,
                               const int i_w, const DType* data,
                               const DType* grid, const int o_n,
@@ -97,7 +97,7 @@ BilinearSamplingForwardKernel(const int i_c, const int i_h,
  */
 template<typename DType>
 __global__ void
-__launch_bounds__(cuda::kMaxThreadsPerBlock, 1)
+__launch_bounds__(ms_cuda::kMaxThreadsPerBlock, 1)
 BilinearSamplingBackwardKernel(const int i_c, const int i_h,
                                const int i_w, const DType* grad,
                                const DType* data, const int o_n,
@@ -171,7 +171,7 @@ inline void BilinearSamplingForward(const Tensor<gpu, 4, DType> &output,
     const DType *grid = grid_src.dptr_;
     int o_n = output.size(0), o_c = output.size(1), o_h = output.size(2), o_w = output.size(3);
     int i_c = input.size(1), i_h = input.size(2), i_w = input.size(3);
-    using namespace cuda;
+    using namespace ms_cuda;
     const int max_block = (output.shape_.Size() + kMaxThreadsPerBlock - 1) / kMaxThreadsPerBlock;
     dim3 num_blocks(kMaxGridDim, (max_block + kMaxGridDim - 1) / kMaxGridDim);
     dim3 threads_per_block(kMaxThreadsPerBlock);
@@ -194,7 +194,7 @@ inline void BilinearSamplingBackward(const Tensor<gpu, 4, DType> &input_grad,
   int o_n = output_grad.size(0), o_c = output_grad.size(1),
       o_h = output_grad.size(2), o_w = output_grad.size(3);
   int i_c = input_data.size(1), i_h = input_data.size(2), i_w = input_data.size(3);
-  using namespace cuda;
+  using namespace ms_cuda;
   const int max_block = (output_grad.shape_.Size() / o_c + kMaxThreadsPerBlock - 1)
                         / kMaxThreadsPerBlock;
   dim3 num_blocks(kMaxGridDim, (max_block + kMaxGridDim - 1) / kMaxGridDim);

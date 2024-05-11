@@ -276,7 +276,7 @@ __global__ void softmax_compute_kernel(DType *in, OType *out, IType *length,
     smem[x] = ::max(smem[x], negate ? -in[base + i*sa] : in[base + i*sa]);
   }
   __syncthreads();
-  cuda::Reduce1D<red::maximum, x_bits>(smem);
+  ms_cuda::Reduce1D<red::maximum, x_bits>(smem);
   __syncthreads();
   DType smax = smem[0];
   __syncthreads();
@@ -288,7 +288,7 @@ __global__ void softmax_compute_kernel(DType *in, OType *out, IType *length,
     smem[x] += static_cast<AType>(expf((val - smax) / static_cast<AType>(temperature)));
   }
   __syncthreads();
-  cuda::Reduce1D<red::sum, x_bits>(smem);
+  ms_cuda::Reduce1D<red::sum, x_bits>(smem);
   __syncthreads();
   AType ssum = smem[0];
   __syncthreads();
@@ -533,7 +533,7 @@ __global__ void softmax_grad_kernel(OType *out, OType *ograd, DType *igrad,
     smem[x] += OP1::Map(ograd[base + i*sa], out[base + i*sa]);
   }
   __syncthreads();
-  cuda::Reduce1D<red::sum, x_bits>(smem);
+  ms_cuda::Reduce1D<red::sum, x_bits>(smem);
   __syncthreads();
   AType ssum = smem[0];
   __syncthreads();

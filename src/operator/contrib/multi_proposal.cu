@@ -35,7 +35,7 @@
 } while (0)
 
 namespace mshadow {
-namespace cuda {
+namespace ms_cuda {
 namespace multi_proposal {
 
 // scores are (b, 2 * anchor, h, w)
@@ -391,7 +391,7 @@ __global__ void PrepareOutput(const int count,
   }
 }
 }  // namespace multi_proposal
-}  // namespace cuda
+}  // namespace ms_cuda
 }  // namespace mshadow
 
 namespace mxnet {
@@ -411,8 +411,8 @@ class MultiProposalGPUOp : public Operator{
                        const std::vector<TBlob> &aux_states) {
     using namespace mshadow;
     using namespace mshadow::expr;
-    using namespace mshadow::cuda;
-    using namespace mshadow::cuda::multi_proposal;
+    using namespace mshadow::ms_cuda;
+    using namespace mshadow::ms_cuda::multi_proposal;
     CHECK_EQ(in_data.size(), 3);
     CHECK_EQ(out_data.size(), 2);
     CHECK_GT(req.size(), 1);

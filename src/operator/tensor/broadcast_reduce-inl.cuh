@@ -25,7 +25,7 @@
 #ifndef MXNET_OPERATOR_TENSOR_BROADCAST_REDUCE_INL_CUH_
 #define MXNET_OPERATOR_TENSOR_BROADCAST_REDUCE_INL_CUH_
 
-using namespace mshadow::cuda;
+using namespace mshadow::ms_cuda;
 
 template<int ndim, typename DType, typename OP, int unroll>
 __launch_bounds__(kMaxThreadsPerBlock)

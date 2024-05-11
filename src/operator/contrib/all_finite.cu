@@ -55,7 +55,7 @@ inline void AllFiniteGPU(const nnvm::NodeAttrs& attrs,
     Tensor<gpu, 2, DType> in = inputs[0].FlatTo2D<gpu, DType>(s);
     const int n = in.shape_.Size();
     AllFiniteGPUKernel<DType><<<cuda_get_num_blocks(n),
-                                mshadow::cuda::kBaseThreadNum, 0,
+                                mshadow::ms_cuda::kBaseThreadNum, 0,
                                 mshadow::Stream<gpu>::GetStream(s)>>>(n, in.dptr_, out.dptr_);
     MSHADOW_CUDA_POST_KERNEL_CHECK(AllFiniteGPUKernel<DType>);
   });
@@ -90,7 +90,7 @@ inline void MultiAllFiniteGPU(const nnvm::NodeAttrs& attrs,
     MultiAllFiniteKernelParam<DType> param =
       FillMultiAllFiniteParam<gpu, DType>(op_param, ctx, inputs);
     MultiAllFiniteGPUKernel<DType><<<cuda_get_num_blocks(param.max_size),
-                                     mshadow::cuda::kBaseThreadNum, 1,
+                                     mshadow::ms_cuda::kBaseThreadNum, 1,
                                      mshadow::Stream<gpu>::GetStream(s)>>>(param, out.dptr_);
     MSHADOW_CUDA_POST_KERNEL_CHECK(MultiAllFiniteGPUKernel<DType>);
   });

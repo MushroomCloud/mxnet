@@ -23,7 +23,7 @@
   } while (0)
 
 namespace mshadow {
-namespace cuda {
+namespace ms_cuda {
   template <typename DType>
   __device__ DType bilinear_interp(const DType* data,
                                    const DType x, const DType y,
@@ -340,7 +340,7 @@ namespace cuda {
     DeformablePSROIPOOLING_CUDA_CHECK(cudaPeekAtLastError());
   }
 
-}  // namespace cuda
+}  // namespace ms_cuda
 
   template<typename DType>
   inline void DeformablePSROIPoolForward(const Tensor<gpu, 4, DType> &out,
@@ -352,7 +352,7 @@ namespace cuda {
                                          const index_t output_dim, const index_t group_size,
                                          const index_t pooled_size, const index_t part_size,
                                          const index_t sample_per_part, const float trans_std) {
-    cuda::DeformablePSROIPoolForward(out, data, bbox, trans, top_count,
+    ms_cuda::DeformablePSROIPoolForward(out, data, bbox, trans, top_count,
                                      no_trans, spatial_scale, output_dim,
                                      group_size, pooled_size, part_size,
                                      sample_per_part, trans_std);
@@ -370,7 +370,7 @@ namespace cuda {
                                              const index_t output_dim, const index_t group_size,
                                              const index_t pooled_size, const index_t part_size,
                                              const index_t sample_per_part, const float trans_std) {
-    cuda::DeformablePSROIPoolBackwardAcc(in_grad, trans_grad, out_grad, data, bbox,
+    ms_cuda::DeformablePSROIPoolBackwardAcc(in_grad, trans_grad, out_grad, data, bbox,
                                          trans, top_count, no_trans, spatial_scale,
                                          output_dim, group_size, pooled_size,
                                          part_size, sample_per_part, trans_std);

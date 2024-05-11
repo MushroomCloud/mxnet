@@ -27,7 +27,7 @@
 
 #include "../../tensor/broadcast_reduce-inl.cuh"
 
-using namespace mshadow::cuda;
+using namespace mshadow::ms_cuda;
 
 template<typename Reducer, int ndim, typename AType, typename DType, typename OType, typename OP, int unroll>
 __launch_bounds__(nthread_reduce)
