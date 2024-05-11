@@ -512,7 +512,7 @@ if(USE_JEMALLOC)
 endif()
 
 include(CTest)
-set(GTEST_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/googletest/googletest")
+set(GTEST_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/googletest")
 set(GTEST_INCLUDE_DIR ${GTEST_ROOT}/include)
 set(GTEST_MAIN_LIBRARY gtest_main)
 set(GTEST_LIBRARY gtest)
