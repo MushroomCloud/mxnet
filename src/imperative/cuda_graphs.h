@@ -199,6 +199,22 @@ class CudaGraphsSubSegExec {
     CHECK(IsRunnable());
     MakeGraph(exec_list, rctx, is_gpu, verbose, from_op_idx_, num_ops_);
 
+#if CUDA_VERSION >= 12000
+    cudaGraphExecUpdateResultInfo update_result_info;
+    cudaError_t err =
+        cudaGraphExecUpdate(graph_exec_.get(), graph_.get(), &update_result_info);
+    switch (err) {
+      case cudaErrorGraphExecUpdateFailure:
+        MakeGraphExec(exec_list, rctx);
+        break;
+      case cudaSuccess:
+        CHECK_EQ(update_result_info.result, cudaGraphExecUpdateSuccess);
+        break;
+      default:
+        // Respond normally to unusual cudaGraphExecUpdate() ret vals
+        CUDA_CALL(err);
+    }
+#else
     cudaGraphExecUpdateResult update_result = cudaGraphExecUpdateError;
     cudaGraphNode_t error_node;
     cudaError_t err =
@@ -214,6 +230,7 @@ class CudaGraphsSubSegExec {
         // Respond normally to unusual cudaGraphExecUpdate() ret vals
         CUDA_CALL(err);
     }
+#endif
   }
 
   void RunSubSeg(const std::vector<std::shared_ptr<exec::OpExecutor>>& exec_list,
