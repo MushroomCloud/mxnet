@@ -21,7 +21,7 @@
   } while (0)
 
 namespace mshadow {
-namespace cuda {
+namespace ms_cuda {
 template <typename DType>
 __device__ DType bilinear_interp(const DType* data,
                                  const DType x,
@@ -406,7 +406,7 @@ inline void DeformablePSROIPoolForward(const Tensor<gpu, 4, DType>& out,
                                        const index_t part_size,
                                        const index_t sample_per_part,
                                        const float trans_std) {
-  cuda::DeformablePSROIPoolForward(out,
+  ms_cuda::DeformablePSROIPoolForward(out,
                                    data,
                                    bbox,
                                    trans,
@@ -437,7 +437,7 @@ inline void DeformablePSROIPoolBackwardAcc(const Tensor<gpu, 4, DType>& in_grad,
                                            const index_t part_size,
                                            const index_t sample_per_part,
                                            const float trans_std) {
-  cuda::DeformablePSROIPoolBackwardAcc(in_grad,
+  ms_cuda::DeformablePSROIPoolBackwardAcc(in_grad,
                                        trans_grad,
                                        out_grad,
                                        data,

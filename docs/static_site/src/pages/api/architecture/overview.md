@@ -846,7 +846,7 @@ can implement them as a `mxnet::op::mshadow_op`. `src/operator/mshadow_op.h` tha
 for example. `mshadow_op` are expression mappers. They deal with the scalar case of desired functions. For details, see
 [mshadow expression API guide](https://github.com/dmlc/mshadow/tree/master/doc).
 
-If an operation can't be done in an element-wise way, like the softmax loss and gradient, then you need to create a new tensor operation. You need to create as `mshadow` function and as `mshadow::cuda`
+If an operation can't be done in an element-wise way, like the softmax loss and gradient, then you need to create a new tensor operation. You need to create as `mshadow` function and as `mshadow::ms_cuda`
 function directly. For details, see the `mshadow` library. For an example, see `src/operator/roi_pooling.cc`.
 
 In our smooth l1 loss example, we create two mappers, namely the scalar cases of smooth l1 loss and gradient.

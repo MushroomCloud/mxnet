@@ -26,7 +26,7 @@
 #define MSHADOW_CUDA_REDUCE_CUH_
 
 namespace mshadow {
-namespace cuda {
+namespace ms_cuda {
 /*
  * \brief reduce over the dimension x
  * \tparam Reducer reducer
@@ -132,7 +132,7 @@ inline __device__ void Reduce1DNotAlign(volatile DType buf[], int x_size) {
   __RD_NON_ALIGN(else, 2)
   __RD_NON_ALIGN(else, 1)
 }
-}  // namespace cuda
+}  // namespace ms_cuda
 }  // namespace mshadow
 #endif  // MSHADOW_CUDA_REDUCE_CUH_
 

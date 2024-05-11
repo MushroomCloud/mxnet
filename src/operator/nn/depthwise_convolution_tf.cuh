@@ -682,7 +682,7 @@ void LaunchDepthwiseConv2dGPUSmall(mshadow::Stream<mxnet::gpu> *stream,
   const int num_outputs =
       args.batch * args.out_height * args.out_width * args.out_channel;
   int block_count = std::min(num_outputs/(block_dim.x * block_dim.y * block_dim.z) + 1,
-                             (unsigned)mshadow::cuda::kMaxGridNum);
+                             (unsigned)mshadow::ms_cuda::kMaxGridNum);
   auto s = mshadow::Stream<mxnet::gpu>::GetStream(stream);
   if (args.filter_height == 3 && args.filter_width == 3) {
     cuda::DepthwiseConv2dKernelSmall<DType, kDirection, kBlockSlices, kEvenHeight, 3, 3>

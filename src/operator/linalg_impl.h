@@ -485,7 +485,7 @@ LINALG_XPU_BATCH_GEMM_AXIS(gpu, double)
     CHECK_NOTNULL(s);                                                                     \
     linalg_check_batch_size(A.size(0), B.size(0), C.size(0));                             \
     check_gemm(A[0], B[0], C[0], alpha, beta, tA, tB);                                    \
-    using namespace mshadow::cuda;                                                        \
+    using namespace mshadow::ms_cuda;                                                        \
     auto handle                  = Stream<gpu>::GetBlasHandle(s);                         \
     cublasMath_t saved_math_mode = SetCublasMathMode(handle, VERSION_ADJUSTED_TF32_MATH); \
     CUBLAS_CALL(cublas##fname(handle,                                                     \
@@ -531,7 +531,7 @@ inline void linalg_batch_gemm<gpu, float>(const Tensor<gpu, 3, float>& A,
   auto blas_handle    = Stream<gpu>::GetBlasHandle(s);
   bool use_tensor_ops = GetEnvAllowTensorCore() && GetEnvAllowTensorCoreConversion();
 
-  using namespace mshadow::cuda;
+  using namespace mshadow::ms_cuda;
   auto cublas_math_mode   = use_tensor_ops ? CUBLAS_TENSOR_OP_MATH : VERSION_ADJUSTED_TF32_MATH;
   auto previous_math_mode = SetCublasMathMode(blas_handle, cublas_math_mode);
 
@@ -1159,7 +1159,7 @@ __global__ void linalgInitIdentityGPU(DType* a, int stride, int lda, int N) {
     CHECK_NOTNULL(s);                                                                          \
     check_potri(A, lower);                                                                     \
     EPHEMERAL_GPU_STORAGE_ALLOC(linalg_potri, buffer, DType, A.MSize());                       \
-    using namespace mshadow::cuda;                                                             \
+    using namespace mshadow::ms_cuda;                                                             \
     int ngrid = std::min(kMaxGridNum,                                                          \
                          static_cast<int>((A.MSize() + kBaseThreadNum - 1) / kBaseThreadNum)); \
     linalgInitIdentityGPU<<<ngrid, kBaseThreadNum, 0, mshadow::Stream<gpu>::GetStream(s)>>>(   \
@@ -1184,7 +1184,7 @@ LINALG_GPU_POTRI(double)
     CHECK_GT(A.size(0), 0);                                                                    \
     check_potri(A[0], lower);                                                                  \
     EPHEMERAL_GPU_STORAGE_ALLOC(linalg_batch_potri, buffer, DType, A.MSize());                 \
-    using namespace mshadow::cuda;                                                             \
+    using namespace mshadow::ms_cuda;                                                             \
     int ngrid = std::min(kMaxGridNum,                                                          \
                          static_cast<int>((A.MSize() + kBaseThreadNum - 1) / kBaseThreadNum)); \
     linalgInitIdentityGPU<<<ngrid, kBaseThreadNum, 0, mshadow::Stream<gpu>::GetStream(s)>>>(   \

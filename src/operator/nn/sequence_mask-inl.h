@@ -63,7 +63,7 @@ inline void SequenceMask(const mshadow::Tensor<gpu, 3, DType>& dst,
                          const mshadow::Tensor<gpu, 1, LType>& lengths,
                          DType value) {
   using namespace mshadow;
-  using namespace mshadow::cuda;
+  using namespace mshadow::ms_cuda;
   dim3 dimBlock(kBaseThreadNum);
   dim3 dimGrid(dst.size(1));
   CheckLaunchParam(dimGrid, dimBlock, "SequenceMask");
