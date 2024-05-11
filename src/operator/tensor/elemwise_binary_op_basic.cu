@@ -251,6 +251,25 @@ void ElemwiseBinaryOp::DnsCsrDnsOp(mshadow::Stream<gpu>* s,
   });
 }
 
+// Explicit instantiation of DnsCsrDnsOp with mshadow_op::plus to prevent a linker error
+template void ElemwiseBinaryOp::DnsCsrDnsOp<mshadow_op::plus>(mshadow::Stream<gpu>* s,
+                                                              const nnvm::NodeAttrs& attrs,
+                                                              const OpContext& ctx,
+                                                              const NDArray& dns,
+                                                              const NDArray& csr,
+                                                              const OpReqType req,
+                                                              const NDArray& output,
+                                                              const bool reverse);
+// Explicit instantiation of DnsCsrDnsOp with mshadow_op::minus to prevent a linker error
+template void ElemwiseBinaryOp::DnsCsrDnsOp<mshadow_op::minus>(mshadow::Stream<gpu>* s,
+                                                               const nnvm::NodeAttrs& attrs,
+                                                               const OpContext& ctx,
+                                                               const NDArray& dns,
+                                                               const NDArray& csr,
+                                                               const OpReqType req,
+                                                               const NDArray& output,
+                                                               const bool reverse);
+
 NNVM_REGISTER_OP(elemwise_add)
     .set_attr<FCompute>("FCompute<gpu>", ElemwiseBinaryRTCCompute{"add"})
     .set_attr<FComputeEx>("FComputeEx<gpu>",
